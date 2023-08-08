@@ -73,11 +73,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   void saveTime() {
-    Text child = _rowList.last.cells[2].child as Text;
-    if (child.data == durationToDigits(myDuration)) return;
-    final timestamp = durationToDigits(myDuration);
-    _addRow(timestamp);
-    _addTotalTime(timestamp);
+    Text? child =
+        _rowList.isNotEmpty ? _rowList.last.cells[2].child as Text : null;
+    if (child == null || child.data != durationToDigits(myDuration)) {
+      final timestamp = durationToDigits(myDuration);
+      _addRow(timestamp);
+      _addTotalTime(timestamp);
+      return;
+    }
   }
 
   Widget getPlayPauseIcon() {
@@ -165,7 +168,11 @@ class _MyAppState extends State<MyApp> {
           ),
           Row(
             children: [
-              _createDataTable(),
+              Expanded(
+                  child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: _createDataTable(),
+              )),
               FloatingActionButton(
                 onPressed: clearTable,
                 child: const Icon(Icons.delete),
