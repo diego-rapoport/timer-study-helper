@@ -143,6 +143,7 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
           title: const Text("Study Helper"),
           backgroundColor: Colors.purple,
+          centerTitle: true,
           ),
       body: Center(
           child: Column(
