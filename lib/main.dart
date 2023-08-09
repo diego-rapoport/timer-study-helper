@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
       stopTime();
       return;
     }
+    setTimeUp();
     time = Timer.periodic(const Duration(seconds: 1), (_) {
       setTimeUp();
     });
