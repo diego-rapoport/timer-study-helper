@@ -167,12 +167,12 @@ class _MyAppState extends State<MyApp> {
               FloatingActionButton(
                 onPressed: restartTime,
                 backgroundColor: Colors.purple,
-                child: const Icon(Icons.restart_alt),
+                child: const Icon(Icons.restore),
               ),
               FloatingActionButton(
                 onPressed: saveTime,
                 backgroundColor: Colors.purple,
-                child: const Icon(Icons.timelapse),
+                child: const Icon(Icons.push_pin),
               )
             ],
           ),
