@@ -130,6 +130,7 @@ class _MyAppState extends State<MyApp> {
   void clearTable() {
     setState(() {
       _rowList.clear();
+      total = "00:00:00";
     });
   }
 
