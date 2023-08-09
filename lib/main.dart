@@ -139,6 +139,7 @@ class _MyAppState extends State<MyApp> {
     final minutes = stringToDigits(myDuration.inMinutes.remainder(60));
     final seconds = stringToDigits(myDuration.inSeconds.remainder(60));
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
       appBar: AppBar(
           title: const Text("Study Helper"),
