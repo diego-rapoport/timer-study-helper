@@ -22,6 +22,8 @@ class _MyAppState extends State<MyApp> {
   int id = 0;
   String total = "00:00:00";
   final List<DataRow> _rowList = [];
+  // ignore: prefer_final_fields
+  bool? _isEditMode = false;
 
   void startTimer() {
     if (time is Timer && time!.isActive) {
@@ -111,11 +113,17 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _rowList.add(DataRow(cells: <DataCell>[
         DataCell(Text(id.toString())),
-        const DataCell(Text("Custom Name")),
+        _createEditableRowCell(),
         DataCell(Text(timeString)),
       ]));
     });
     id++;
+  }
+
+  DataCell _createEditableRowCell() {
+    return DataCell(_isEditMode == true
+        ? TextFormField(initialValue: "Name", style: const TextStyle(fontSize: 14))
+        : const Text("Name"));
   }
 
   void _addTotalTime(String lastTime) {
@@ -133,6 +141,22 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Row _createCheckboxField() {
+    return Row(
+      children: [
+        Checkbox(
+          value: _isEditMode,
+          onChanged: (value) {
+            setState(() {
+              _isEditMode = value;
+            });
+          },
+        ),
+        const Text('Edit mode'),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final hours = stringToDigits(myDuration.inHours.remainder(24));
@@ -141,57 +165,64 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-      appBar: AppBar(
-          title: const Text("Study Helper"),
-          backgroundColor: Colors.purple,
-          centerTitle: true,
+          appBar: AppBar(
+            title: const Text("Study Helper"),
+            backgroundColor: Colors.purple,
+            centerTitle: true,
           ),
-      body: Center(
-          child: Column(
-        children: [
-          Text('$hours:$minutes:$seconds',
-              style: const TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.w500,
-              )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          body: Center(
+              child: Column(
             children: [
-              FloatingActionButton(
-                onPressed: startTimer,
-                backgroundColor: Colors.purple,
-                child: getPlayPauseIcon(),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Text('$hours:$minutes:$seconds',
+                    style: const TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w500,
+                    )),
               ),
-              FloatingActionButton(
-                onPressed: restartTime,
-                backgroundColor: Colors.purple,
-                child: const Icon(Icons.restart_alt),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: startTimer,
+                      backgroundColor: Colors.purple,
+                      child: getPlayPauseIcon(),
+                    ),
+                    FloatingActionButton(
+                      onPressed: restartTime,
+                      backgroundColor: Colors.purple,
+                      child: const Icon(Icons.restart_alt),
+                    ),
+                    FloatingActionButton(
+                      onPressed: saveTime,
+                      backgroundColor: Colors.purple,
+                      child: const Icon(Icons.timelapse),
+                    )
+                  ],
+                ),
               ),
-              FloatingActionButton(
-                onPressed: saveTime,
-                backgroundColor: Colors.purple,
-                child: const Icon(Icons.timelapse),
-              )
+              Row(
+                children: [
+                  Expanded(
+                      child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: _createDataTable(),
+                  )),
+                  FloatingActionButton(
+                    onPressed: clearTable,
+                    backgroundColor: Colors.purple,
+                    child: const Icon(Icons.delete),
+                  )
+                ],
+              ),
+              _createCheckboxField(),
+              Text("Total: $total")
             ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: _createDataTable(),
-              )),
-              FloatingActionButton(
-                onPressed: clearTable,
-                backgroundColor: Colors.purple,
-                child: const Icon(Icons.delete),
-              )
-            ],
-          ),
-          Text("Total: $total")
-        ],
-      )),
-    ));
+          )),
+        ));
   }
 }
