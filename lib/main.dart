@@ -140,7 +140,10 @@ class _MyAppState extends State<MyApp> {
     final seconds = stringToDigits(myDuration.inSeconds.remainder(60));
     return MaterialApp(
         home: Scaffold(
-      appBar: AppBar(title: const Text("Study Helper")),
+      appBar: AppBar(
+          title: const Text("Study Helper"),
+          backgroundColor: Colors.purple,
+          ),
       body: Center(
           child: Column(
         children: [
@@ -155,14 +158,17 @@ class _MyAppState extends State<MyApp> {
             children: [
               FloatingActionButton(
                 onPressed: startTimer,
+                backgroundColor: Colors.purple,
                 child: getPlayPauseIcon(),
               ),
               FloatingActionButton(
                 onPressed: restartTime,
+                backgroundColor: Colors.purple,
                 child: const Icon(Icons.restart_alt),
               ),
               FloatingActionButton(
                 onPressed: saveTime,
+                backgroundColor: Colors.purple,
                 child: const Icon(Icons.timelapse),
               )
             ],
@@ -176,6 +182,7 @@ class _MyAppState extends State<MyApp> {
               )),
               FloatingActionButton(
                 onPressed: clearTable,
+                backgroundColor: Colors.purple,
                 child: const Icon(Icons.delete),
               )
             ],
