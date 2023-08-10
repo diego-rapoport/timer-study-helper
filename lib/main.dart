@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,8 +21,6 @@ class _MyAppState extends State<MyApp> {
   int id = 0;
   String total = "00:00:00";
   final List<DataRow> _rowList = [];
-  // ignore: prefer_final_fields
-  bool? _isEditMode = false;
 
   void startTimer() {
     if (time is Timer && time!.isActive) {
@@ -113,17 +110,11 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _rowList.add(DataRow(cells: <DataCell>[
         DataCell(Text(id.toString())),
-        _createEditableRowCell(),
+        const DataCell(Text("Name"), placeholder: true),
         DataCell(Text(timeString)),
       ]));
     });
     id++;
-  }
-
-  DataCell _createEditableRowCell() {
-    return DataCell(_isEditMode == true
-        ? TextFormField(initialValue: "Name", style: const TextStyle(fontSize: 14))
-        : const Text("Name"));
   }
 
   void _addTotalTime(String lastTime) {
@@ -141,22 +132,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Row _createCheckboxField() {
-    return Row(
-      children: [
-        Checkbox(
-          value: _isEditMode,
-          onChanged: (value) {
-            setState(() {
-              _isEditMode = value;
-            });
-          },
-        ),
-        const Text('Edit mode'),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final hours = stringToDigits(myDuration.inHours.remainder(24));
@@ -165,64 +140,64 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Study Helper"),
-            backgroundColor: Colors.purple,
-            centerTitle: true,
-          ),
-          body: Center(
-              child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Text('$hours:$minutes:$seconds',
-                    style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.w500,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    FloatingActionButton(
-                      onPressed: startTimer,
-                      backgroundColor: Colors.purple,
-                      child: getPlayPauseIcon(),
-                    ),
-                    FloatingActionButton(
-                      onPressed: restartTime,
-                      backgroundColor: Colors.purple,
-                      child: const Icon(Icons.restart_alt),
-                    ),
-                    FloatingActionButton(
-                      onPressed: saveTime,
-                      backgroundColor: Colors.purple,
-                      child: const Icon(Icons.timelapse),
-                    )
-                  ],
-                ),
-              ),
-              Row(
+            appBar: AppBar(
+              title: const Text("Study Helper"),
+              backgroundColor: Colors.purple,
+              centerTitle: true,
+            ),
+            body: Builder(
+              builder: (context) => Center(
+                  child: Column(
                 children: [
-                  Expanded(
-                      child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: _createDataTable(),
-                  )),
-                  FloatingActionButton(
-                    onPressed: clearTable,
-                    backgroundColor: Colors.purple,
-                    child: const Icon(Icons.delete),
-                  )
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: Text('$hours:$minutes:$seconds',
+                        style: const TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        FloatingActionButton(
+                          onPressed: startTimer,
+                          backgroundColor: Colors.purple,
+                          child: getPlayPauseIcon(),
+                        ),
+                        FloatingActionButton(
+                          onPressed: restartTime,
+                          backgroundColor: Colors.purple,
+                          child: const Icon(Icons.restart_alt),
+                        ),
+                        FloatingActionButton(
+                          onPressed: saveTime,
+                          backgroundColor: Colors.purple,
+                          child: const Icon(Icons.timelapse),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: _createDataTable(),
+                      )),
+                      FloatingActionButton(
+                        onPressed: clearTable,
+                        backgroundColor: Colors.purple,
+                        child: const Icon(Icons.delete),
+                      )
+                    ],
+                  ),
+                  Text("Total: $total")
                 ],
-              ),
-              _createCheckboxField(),
-              Text("Total: $total")
-            ],
-          )),
-        ));
+              )),
+            )));
   }
 }
