@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -111,7 +110,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _rowList.add(DataRow(cells: <DataCell>[
         DataCell(Text(id.toString())),
-        const DataCell(Text("Custom Name")),
+        const DataCell(Text("Name"), placeholder: true),
         DataCell(Text(timeString)),
       ]));
     });
@@ -142,57 +141,63 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-      appBar: AppBar(
-          title: const Text("Study Helper"),
-          backgroundColor: Colors.purple,
-          centerTitle: true,
-          ),
-      body: Center(
-          child: Column(
-        children: [
-          Text('$hours:$minutes:$seconds',
-              style: const TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.w500,
-              )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              FloatingActionButton(
-                onPressed: startTimer,
-                backgroundColor: Colors.purple,
-                child: getPlayPauseIcon(),
-              ),
-              FloatingActionButton(
-                onPressed: restartTime,
-                backgroundColor: Colors.purple,
-                child: const Icon(Icons.restore),
-              ),
-              FloatingActionButton(
-                onPressed: saveTime,
-                backgroundColor: Colors.purple,
-                child: const Icon(Icons.push_pin),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: _createDataTable(),
-              )),
-              FloatingActionButton(
-                onPressed: clearTable,
-                backgroundColor: Colors.purple,
-                child: const Icon(Icons.delete),
-              )
-            ],
-          ),
-          Text("Total: $total")
-        ],
-      )),
-    ));
+            appBar: AppBar(
+              title: const Text("Study Helper"),
+              backgroundColor: Colors.purple,
+              centerTitle: true,
+            ),
+            body: Builder(
+                builder: (context) => Center(
+                        child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 30),
+                          child: Text('$hours:$minutes:$seconds',
+                              style: const TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w500,
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              FloatingActionButton(
+                                onPressed: startTimer,
+                                backgroundColor: Colors.purple,
+                                child: getPlayPauseIcon(),
+                              ),
+                              FloatingActionButton(
+                                onPressed: restartTime,
+                                backgroundColor: Colors.purple,
+                                child: const Icon(Icons.history),
+                              ),
+                              FloatingActionButton(
+                                onPressed: saveTime,
+                                backgroundColor: Colors.purple,
+                                child: const Icon(Icons.alarm_add),
+                              )
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: _createDataTable(),
+                            )),
+                            FloatingActionButton(
+                              onPressed: clearTable,
+                              backgroundColor: Colors.purple,
+                              child: const Icon(Icons.delete),
+                            )
+                          ],
+                        ),
+                        Text("Total: $total")
+                      ],
+                    )))));
   }
 }
