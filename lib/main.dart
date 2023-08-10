@@ -189,14 +189,16 @@ class _MyAppState extends State<MyApp> {
                               scrollDirection: Axis.vertical,
                               child: _createDataTable(),
                             )),
-                            FloatingActionButton(
+                          ],
+                        ),
+                        Text("Total: $total"),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: FloatingActionButton(
                               onPressed: clearTable,
                               backgroundColor: Colors.purple,
                               child: const Icon(Icons.delete),
-                            )
-                          ],
-                        ),
-                        Text("Total: $total")
+                            ))
                       ],
                     )))));
   }
