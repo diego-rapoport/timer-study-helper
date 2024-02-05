@@ -8,14 +8,21 @@ void main() {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   State<StatefulWidget> createState() {
     return _MyAppState();
   }
+
 }
 
 class _MyAppState extends State<MyApp> {
+
+  @override
+  void dispose() {
+    if(time?.isActive ?? false) time?.cancel();
+    super.dispose();
+  }
+
   Timer? time;
   Duration myDuration = const Duration(milliseconds: 0);
   int id = 0;
@@ -151,6 +158,7 @@ class _MyAppState extends State<MyApp> {
                         child: Column(
                       children: [
                         Padding(
+                          key: const Key('mainText'),
                           padding: const EdgeInsets.symmetric(vertical: 30),
                           child: Text('$hours:$minutes:$seconds',
                               style: const TextStyle(
@@ -165,16 +173,19 @@ class _MyAppState extends State<MyApp> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               FloatingActionButton(
+                                key: const Key('playPauseButton'),
                                 onPressed: startTimer,
                                 backgroundColor: Colors.purple,
                                 child: getPlayPauseIcon(),
                               ),
                               FloatingActionButton(
+                                key: const Key('restartButton'),
                                 onPressed: restartTime,
                                 backgroundColor: Colors.purple,
                                 child: const Icon(Icons.history),
                               ),
                               FloatingActionButton(
+                                key: const Key('saveButton'),
                                 onPressed: saveTime,
                                 backgroundColor: Colors.purple,
                                 child: const Icon(Icons.alarm_add),
@@ -195,6 +206,7 @@ class _MyAppState extends State<MyApp> {
                         Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             child: FloatingActionButton(
+                              key: const Key('clearButton'),
                               onPressed: clearTable,
                               backgroundColor: Colors.purple,
                               child: const Icon(Icons.delete),
